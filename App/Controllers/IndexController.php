@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 //os recursos do miniframework
-use App\Models\Usuario;
+//use App\Models\Usuario;
 use MF\Controller\Action;
 use MF\Model\Container;
 
@@ -12,7 +12,7 @@ class IndexController extends Action
 
 	public function index()
 	{
-
+		$this->view->login = isset($_GET['login']) ? $_GET['login'] : '';
 		$this->render('index');
 	}
 
@@ -26,6 +26,7 @@ class IndexController extends Action
 
 		);
 		$this->view->erroCadastro=false;
+
 		$this->render('inscreverse');
 	}
 
@@ -33,9 +34,9 @@ class IndexController extends Action
 	{
 		//testando a super globa
 
-		echo '<pre>';
-		print_r($_POST);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($_POST);
+		// echo '</pre>';
 
 		$usuario = Container::getModel('Usuario');
 
