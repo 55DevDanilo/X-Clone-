@@ -10,30 +10,58 @@ use MF\Model\Container;
 class AppController extends Action
 {
 
-    public function timeline(){
+    public function timeline()
+    {
 
-        session_start();
-        
-        if ($_SESSION['id'] != ''&& $_SESSION['nome']!='') {
 
-            // echo'chegamos aqui';
+            $this->validaAutenticacao();
 
-            // echo'<pre>';
+            $tweet = Container::getModel('Tweet');
 
-            // print_r($_SESSION);
+            $tweet->__set('id_usuario', $_SESSION['id']);
+
+            $tweets = $tweet->getAll();
+            // echo '<pre>';
+
+            // print_r($tweets);
+
+            // echo '</pre>';
+
+            $this->view->tweets = $tweets;
 
             $this->render('timeline');
             # code...
 
-            echo'</pre>';
-        }else
 
-        {
-            header('Location: /?login=erro');
-        }
+        
+    }
 
+    public function tweet()
+    {
 
-
+      //session_start();
+        $this->validaAutenticacao();
        
+        //  $this->render('timeline');
+        //  print_r($_POST);
+
+        $tweet = Container::getModel('Tweet');
+        $tweet->__set('tweet', $_POST['tweet']);
+        $tweet->__set('id_usuario', $_SESSION['id']);
+        $tweet->salvar();
+        header('Location: /timeline');
+      
+    }
+
+    public function validaAutenticacao()
+    {
+        session_start();
+
+        if (!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome'])|| $_SESSION['nome']=='' ) {
+            header('Location: /?login=erro');
+        } 
+        else {
+            
+        }
     }
 }
