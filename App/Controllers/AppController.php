@@ -29,8 +29,14 @@ class AppController extends Action
 
         $this->view->tweets = $tweets;
 
+        $usuario = Container::getModel('Usuario');
+        $usuario->__set('id', $_SESSION['id']);
+        $this->view->info_usuario = $usuario->getInfoUsuarios();
+        $this->view->total_tweets = $usuario->getTotalTweets();
+        $this->view->total_seguindo = $usuario->getTotalSeguindo();
+        $this->view->total_seguidores = $usuario->getTotalSeguidores();
         $this->render('timeline');
-        # code...
+        # code...getTotalSeguidores
 
 
 
@@ -92,25 +98,23 @@ class AppController extends Action
     public function acao()
     {
         $this->validaAutenticacao();
-       // print_r($_GET);
+        // print_r($_GET);
         //acao 
 
         $acao = isset($_GET['acao']) ? $_GET['acao'] : '';
         $id_usuario_seguindo = isset($_GET['id_usuario']) ? $_GET['id_usuario'] : '';
 
-         $usuario = Container::getModel('Usuario');
-         $usuario->__set('id', $_SESSION['id']);
+        $usuario = Container::getModel('Usuario');
+        $usuario->__set('id', $_SESSION['id']);
 
         if ($acao == 'seguir') {
             $usuario->seguirUsuario($id_usuario_seguindo);
-        }
-        else if ($acao == 'deixar_de_seguir') {
+        } else if ($acao == 'deixar_de_seguir') {
 
             $usuario->deixarSeguirUsuario($id_usuario_seguindo);
-            
-         }
+        }
 
-         header('Location: /quem_seguir');
+        header('Location: /quem_seguir');
 
 
         //id_usuario
